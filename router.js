@@ -11,6 +11,4 @@ router.put("/v1/products", ProductController.update);
 router.delete("/v1/products/id/:id", ProductController.delete);
 router.delete("/v1/products/sku/:sku", ProductController.delete);
 
-/* CRUD routes*/
-
 export default router;
