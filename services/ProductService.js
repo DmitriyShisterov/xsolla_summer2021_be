@@ -21,7 +21,6 @@ class ProductService {
     }
 
     update(params) {
-        let product = {};
         if (params._id) {
             return Product.findByIdAndUpdate(params._id, params, {
                 new: true,
@@ -38,7 +37,6 @@ class ProductService {
     }
 
     delete(params) {
-        let product = {};
         switch (Object.keys(params)[0]) {
             case "id":
                 return Product.findByIdAndDelete(params.id);
