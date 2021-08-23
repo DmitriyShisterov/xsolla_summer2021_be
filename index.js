@@ -9,6 +9,7 @@ import Product from "./models/Product.js";
 
 const PORT = process.env.PORT ?? PORT_APP;
 const app = express();
+
 const root = {
     getProduct: (args) => {
         switch (Object.keys(args)[0]) {
@@ -58,6 +59,7 @@ const root = {
 
 app.use(express.json());
 app.use("/api/", router);
+app.use("/auth", router);
 app.use(
     "/graphql",
     graphqlHTTP({
