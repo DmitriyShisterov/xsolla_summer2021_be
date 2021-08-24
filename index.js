@@ -6,6 +6,7 @@ import { DB_URL, PORT_APP } from "./config/config.js";
 import { graphqlHTTP } from "express-graphql";
 import schema from "./models/SchemaGQL.js";
 import Product from "./models/Product.js";
+import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT ?? PORT_APP;
 const app = express();
@@ -58,6 +59,7 @@ const root = {
 };
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/", router);
 app.use("/auth", router);
 app.use(

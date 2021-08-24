@@ -7,10 +7,12 @@ const roleMiddleware = function (roles) {
         }
         try {
             const token = req.headers.authorization.split(" ")[1];
+            console.log("token:", token);
             if (!token) {
-                return res.status(400).json({ message: "Access denided (token)" });
+                return res.status(400).json({ message: "Access denided, token incorrect" });
             }
             const { roles: userRoles } = jwt.verify(token, SECRET.secret);
+            console.log("userRoles:", userRoles);
             let hasRole = false;
             userRoles.forEach((role) => {
                 if (roles.includes(role)) {
@@ -18,12 +20,12 @@ const roleMiddleware = function (roles) {
                 }
             });
             if (!hasRole) {
-                return res.status(400).json({ message: "Access denided2" });
+                return res.status(400).json({ message: "Access denided, required role not found" });
             }
             next();
         } catch (e) {
             console.log(e);
-            return res.status(400).json({ message: "Access denided3" });
+            return res.status(400).json({ message: "Access denided, error authorization" });
         }
     };
 };

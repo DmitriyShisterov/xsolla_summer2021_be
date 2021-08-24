@@ -2,16 +2,7 @@ import User from "../models/User.js";
 import Role from "../models/Role.js";
 import Bcrypt from "bcryptjs";
 import validator from "express-validator";
-import jwt from "jsonwebtoken";
-import SECRET from "../config/config.js";
-
-const generateAccessToken = (id, roles) => {
-    const payload = {
-        id,
-        roles,
-    };
-    return jwt.sign(payload, SECRET.secret, { expiresIn: "24h" });
-};
+import TokenService from "../services/TokenService.js";
 
 class authController {
     async registration(req, res) {
@@ -32,6 +23,7 @@ class authController {
                 userName,
                 userPassword: hashUserPassword,
                 userRole: [uRole.value],
+                isActivated: true,
             });
             await user.save();
             return res.json({ message: "User was registred" });
@@ -52,10 +44,14 @@ class authController {
             if (!validPassword) {
                 return res.status(400).json({ messahe: "Password incorrect" });
             }
-            //jwt_token генерировать
-            const token = generateAccessToken(user._id, user.userRole);
-            console.log(token);
-            return res.json({ token });
+            const tokenService = new TokenService();
+            const tokens = tokenService.generateTokens(user._id, user.userRole);
+            await tokenService.saveTokens(user._id, tokens.refreshToken);
+            res.cookie("refreshToken", tokens.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            return res.json({ ...tokens });
         } catch (e) {
             console.log(e);
             res.status(400).json({ message: "Login error" });
