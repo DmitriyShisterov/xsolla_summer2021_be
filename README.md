@@ -38,7 +38,7 @@
   * #### Создание товара (CREATE)
     Для создания товара необходимо передать объект товара в формате JSON в теле запроса.
     - Тип запроса: POST
-    - URL: `http://localhost:5000/api/products`  
+    - URL: `http://localhost:3000/api/products`  
     - В body запроса необходмио передать  создаваемый объект JSON:  
     ```
     {
@@ -54,7 +54,7 @@
   * #### Получение товара по SKU или уникальному идентификатору или списка товаров (READ)  
     Для получения товара по SKU необходимо передать соответствующий get-параметр sku.
     - Тип запроса: GET
-    - URL: `http://localhost:5000/api/products?sku=G11C21P5`  
+    - URL: `http://localhost:3000/api/products?sku=G11C21P5`  
     В ответ сервер вернет объект товара:
      ```
     {
@@ -68,7 +68,7 @@
     ```
     Для получения товара по уникальному идентификатору необходимо передать сам уникальный идентификатор.
     - Тип запроса: GET
-    - URL: `http://localhost:5000/api/products/60eed470aa7711da2e229137`  
+    - URL: `http://localhost:3000/api/products/60eed470aa7711da2e229137`  
     В ответ сервер вернет объект товара:
      ```
     {
@@ -83,7 +83,7 @@
   * #### Изменение товара по SKU или уникальному идентификатору (UPDATE)  
     Для изменения товара по SKU или уникальному идентификатор необходимо передать измененный объект товара в теле запроса.
     - Тип запроса: PUT
-    - URL: `http://localhost:5000/api/products` 
+    - URL: `http://localhost:3000/api/products` 
     - В body запроса необходмио передать создаваемый объект JSON:  
      ```
     {
@@ -99,13 +99,75 @@
   * #### Удаление товара по SKU или уникальному идентификатору (DELETE)  
     Для удаления товара по SKU необходимо передать sku в строке запроса.
     - Тип запроса: DELETE
-    - URL: `http://localhost:5000/api/products?sku=G5C3P5` 
+    - URL: `http://localhost:3000/api/products?sku=G5C3P5` 
     В ответ сервер вернет null.
     Для удаления товара по уникальному идентификатору необходимо передать уникальный идентификатор в строке запроса.
     - Тип запроса: DELETE
-    - URL: `http://localhost:5000/api/products/60f006edcac6edea0962318e` 
+    - URL: `http://localhost:3000/api/products/60f006edcac6edea0962318e` 
     В ответ сервер вернет null.
     
 ## Дополнительно
+### GraphQL
+   Система поддерживает использование языка запросов GraphQL для CRUD-операций.
+   Endpoint для запросов:
+   - URL: `http://localhost:3000/graphql`
+   #### Примеры запросов CRUD:
+   - Создание товара:
+   ```
+  mutation {
+   createProduct(sku: "G75C4P5", type: "game", name: "God of War", price: 100) {
+    sku
+    type
+    name
+    price
+      }
+   }
+    
+   ```
+   - Получение товара(ов):
+   
+   ```
+  {
+  getProduct {
+    _id
+    sku
+    type
+    name
+    price
+      }
+  }
+  
+  ``` 
+    
+  - Изменение товара:
+  
+   ```
+  mutation {
+  updateProduct(sku: "G75C4P5", type: "game", name: "God of War", price: 115) {
+    _id
+    sku
+    type
+    name
+    price
+      }
+   }
+    
+  ```
+  
+  - Удаление товара:
+  
+   ```
+  mutation {
+  deleteProduct(sku: "G75C4P5") {
+    _id
+    sku
+    type
+    name
+    price
+      }
+   }
+    
+  ```
+
    Приложение развернуто на публичном хостинге Heroku:
    https://whispering-meadow-42322.herokuapp.com/
