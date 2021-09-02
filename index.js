@@ -8,7 +8,7 @@ import schema from "./models/SchemaGQL.js";
 import Product from "./models/Product.js";
 import cookieParser from "cookie-parser";
 
-const PORT = process.env.PORT ?? PORT_APP;
+const PORT = process.env.PORT || PORT_APP;
 const app = express();
 
 const root = {

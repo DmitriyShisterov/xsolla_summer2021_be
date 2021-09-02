@@ -32,6 +32,19 @@ class authController {
             res.status(400).json({ message: "Login error" });
         }
     }
+    async refresh(req, res) {
+        try {
+            const { refreshToken } = req.cookies;
+            console.log("refreshToken(controller):", refreshToken);
+            const authService = new AuthService();
+            const answer = await authService.refresh(refreshToken);
+            res.cookie("refreshToken", answer.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            return res.json({ ...answer });
+        } catch (e) {}
+    }
     async getUsers(req, res) {
         try {
             const users = await User.find();

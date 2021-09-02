@@ -15,7 +15,7 @@ router.post(
     authController.registration
 );
 router.post("/login", authController.login);
-router.post("/refresh");
+router.get("/refresh", authController.refresh);
 
 router.get("/users", roleMiddleware(["ADMIN"]), authController.getUsers);
 router.post("/v1/products", roleMiddleware(["ADMIN"]), ProductController.create);

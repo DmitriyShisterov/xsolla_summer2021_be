@@ -37,5 +37,20 @@ class AuthService {
         tokenService.saveTokens(user._id, tokens.refreshToken);
         return tokens;
     }
+    async refresh(refreshToken) {
+        const tokenService = new TokenService();
+        if (!refreshToken) {
+            return { message: "refreshToken incorrect" };
+        }
+        const userData = await tokenService.validateRefreshTokens(refreshToken);
+        /* const tokenFromDB = await tokenService.find(refreshToken);
+        if (!userData || !tokenFromDB) {
+            return { message: "Unauthorized" };
+        } */
+        const user = await User.findById(userData.id);
+        const tokens = tokenService.generateTokens(user._id, user.userRole);
+        await tokenService.saveTokens(user._id, tokens.refreshToken);
+        return tokens;
+    }
 }
 export default AuthService;
