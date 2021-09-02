@@ -7,7 +7,7 @@ class TokenService {
             id,
             roles,
         };
-        const accessToken = jwt.sign(payload, SECRET.secret, { expiresIn: "30s" });
+        const accessToken = jwt.sign(payload, SECRET.secret, { expiresIn: "30m" });
         const refreshToken = jwt.sign(payload, SECRET.refresh, { expiresIn: "30d" });
         return {
             accessToken,
@@ -41,7 +41,6 @@ class TokenService {
     }
     async find(refreshToken) {
         const tokenData = await tokenModel.findOne({ refreshToken });
-        console.log("tokenData:", tokenData);
         return tokenData;
     }
 }
